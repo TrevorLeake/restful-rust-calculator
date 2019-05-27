@@ -4,7 +4,7 @@
 
 #[get("/?<query_string>")]
 fn string_adder(query_string: String) -> String {
-    let split_string: Vec<&str> = query_string.split("p").collect();
+    let split_string: Vec<&str> = query_string.split("+").collect();
 
     let mut response_string = String::from("The sum of ");
 
@@ -23,7 +23,7 @@ fn string_adder(query_string: String) -> String {
 }
 
 fn adder(query_string: String) -> i32 {
-    let split_string = query_string.split("p");
+    let split_string = query_string.split("+");
 
     let mut sum: i32 = 0;
     for x in split_string {
@@ -36,6 +36,7 @@ fn adder(query_string: String) -> i32 {
 
 fn main() {
     rocket::ignite()
+        .mount("/", rocket_contrib::serve::StaticFiles::from("static"))
         .mount("/adder", routes![string_adder])
         .launch();
 }
